@@ -1,8 +1,10 @@
 # How to install
 
-1. Copy honnypotter.php into a new directory in ``$WP_ROOT/wp-content/plugins/``
-2. Activate via administration panel.
-3. All failed login attempts will be logged to ``$WP_ROOT/wp-content/plugins/$PLUGIN_FOLDER/log.txt``
+1. Copy all the files into a new directory in ``$WP_ROOT/wp-content/plugins/``
+2. Activate the plugin via the WordPress administration panel. (``/wp-admin/plugins.php``)
+3. Navigate to the settings panel under ``Settings > HonnyPotter``
+4. Here you can alternatively change the log name. We autogenerate a random name on plugin installation.
+5. All failed login attempts will be logged to the log file.
 
 # Note(!!!)
 
