@@ -28,23 +28,15 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 Copyright 2005-2015 Martin Ingesen.
 */
 
-require_once (plugin_dir_path(__FILE__) . 'options.php');
+define( 'HONNYPOTTER__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
-register_activation_hook(__FILE__, 'options_init');
+require_once ( HONNYPOTTER__PLUGIN_DIR . 'class.honnypotter.php' );
+add_action( 'init', array( 'HonnyPotter', 'init' ) );
 
-function options_init()
+if( is_admin() )
 {
-	$random_log_file_name = bin2hex(mcrypt_create_iv(7, MCRYPT_DEV_URANDOM)) . '.txt';
-	$array['log_name'] = $random_log_file_name;
-	update_option('honnypotter', $array);
-}
-
-function log_data($username, $password)
-{
-	$logname = get_option('honnypotter') ['log_name'];
-	$logfile = fopen(plugin_dir_path(__FILE__) . $logname, 'a');
-	fwrite($logfile, sprintf("%s - %s:%s\n", date('Y-m-d H:i:s') , $username, $password));
-	fclose($logfile);
+	require_once( HONNYPOTTER__PLUGIN_DIR . 'class.honnypotter-admin.php' );
+	add_action( 'init', array( 'HonnyPotter_Admin', 'init' ) );
 }
 
 if (!function_exists('wp_authenticate')) {
@@ -85,7 +77,10 @@ if (!function_exists('wp_authenticate')) {
 			 *
 			 * @param string $username User login.
 			 */
-			log_data($username, $password);
+			$logname = get_option('honnypotter') ['log_name'];
+ 			$logfile = fopen(plugin_dir_path(__FILE__) . $logname, 'a');
+ 			fwrite($logfile, sprintf("%s - %s:%s\n", date('Y-m-d H:i:s') , $username, $password));
+ 			fclose($logfile);
 			do_action('wp_login_failed', $username);
 		}
 
