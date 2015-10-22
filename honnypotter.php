@@ -31,7 +31,7 @@ Copyright 2005-2015 Martin Ingesen.
 define( 'HONNYPOTTER__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once ( HONNYPOTTER__PLUGIN_DIR . 'class.honnypotter.php' );
-add_action( 'init', array( 'HonnyPotter', 'init' ) );
+register_activation_hook(__FILE__, array( 'HonnyPotter', 'options_init' ) );
 
 if( is_admin() )
 {
