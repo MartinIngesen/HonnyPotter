@@ -52,7 +52,7 @@ class HonnyPotter_Admin
     <?php
   	settings_fields('honnypotter_options'); ?>
     <h3>Edit log name</h3>
-    <input type="text" size="50" name="honnypotter[log_name]" value="<?php echo get_option('honnypotter') ['log_name']; ?>">
+    <input type="text" size="50" name="honnypotter[log_name]" value="<?php echo $options['log_name']; ?>">
     <br />
     <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
   </form>
