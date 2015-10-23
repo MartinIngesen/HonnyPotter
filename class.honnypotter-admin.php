@@ -19,26 +19,27 @@ class HonnyPotter_Admin
     add_action('admin_init', array( 'HonnyPotter_Admin', 'plugin_admin_init') );
   }
 
-  function plugin_admin_add_page()
+  public static function plugin_admin_add_page()
   {
   	add_options_page('HonnyPotter', 'HonnyPotter', 'manage_options', 'honnypotter', array( 'HonnyPotter_Admin', 'plugin_options_page') );
   }
 
 
 
-  function plugin_admin_init()
+  public static function plugin_admin_init()
   {
   	register_setting('honnypotter_options', 'honnypotter', array( 'HonnyPotter_Admin', 'honnypotter_validate' ) );
   }
 
-  function honnypotter_validate($input)
+  public static function honnypotter_validate($input)
   {
   	return $input;
   }
 
-  function plugin_options_page()
+  public static function plugin_options_page()
   {
-  	$logpath = plugin_dir_url(__FILE__) . get_option('honnypotter') ['log_name'];
+    $options = get_option('honnypotter');
+  	$logpath = plugin_dir_url(__FILE__) . $options['log_name'];
   ?>
   <div class="wrap">
   <h2>HonnyPotter</h2>

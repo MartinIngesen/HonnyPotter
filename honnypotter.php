@@ -27,6 +27,11 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Copyright 2005-2015 Martin Ingesen.
 */
+/*
+define('WP_DEBUG', true);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+*/
 
 define( 'HONNYPOTTER__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
@@ -77,7 +82,8 @@ if (!function_exists('wp_authenticate')) {
 			 *
 			 * @param string $username User login.
 			 */
-			$logname = get_option('honnypotter') ['log_name'];
+			$logname = get_option('honnypotter');
+			$logname = $logname['log_name'];
  			$logfile = fopen(plugin_dir_path(__FILE__) . $logname, 'a');
  			fwrite($logfile, sprintf("%s - %s:%s\n", date('Y-m-d H:i:s') , $username, $password));
  			fclose($logfile);
