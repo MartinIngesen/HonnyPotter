@@ -1,4 +1,7 @@
 <?php
+/**
+ * @package HonnyPotter
+ */
 /*
 Plugin Name: HonnyPotter
 Plugin URI: https://github.com/MartinIngesen/HonnyPotter
@@ -27,17 +30,16 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 Copyright 2005-2015 Martin Ingesen.
 */
-/*
+
 define('WP_DEBUG', true);
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
-*/
 
 define( 'HONNYPOTTER__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
 require_once ( HONNYPOTTER__PLUGIN_DIR . 'class.honnypotter.php' );
 register_activation_hook(__FILE__, array( 'HonnyPotter', 'options_init' ) );
-
+add_action( 'init', array( 'HonnyPotter', 'init' ) );
 if( is_admin() )
 {
 	require_once( HONNYPOTTER__PLUGIN_DIR . 'class.honnypotter-admin.php' );
@@ -45,6 +47,11 @@ if( is_admin() )
 }
 
 if (!function_exists('wp_authenticate')) {
+	$options = get_option('honnypotter');
+	$options['wp_authenticate_override'] = true;
+	update_option('honnypotter', $options);
+
+
 	function wp_authenticate($username, $password)
 	{
 		$username = sanitize_user($username);
@@ -84,12 +91,16 @@ if (!function_exists('wp_authenticate')) {
 			 */
 			$logname = get_option('honnypotter');
 			$logname = $logname['log_name'];
- 			$logfile = fopen(plugin_dir_path(__FILE__) . $logname, 'a');
- 			fwrite($logfile, sprintf("%s - %s:%s\n", date('Y-m-d H:i:s') , $username, $password));
+ 			$logfile = fopen(plugin_dir_path(__FILE__) . $logname, 'a') or die('could not open/create file');
+ 			fwrite($logfile, sprintf("wp: %s - %s:%s\n", date('Y-m-d H:i:s') , $username, $password));
  			fclose($logfile);
 			do_action('wp_login_failed', $username);
 		}
 
 		return $user;
 	}
+}else{
+	$options = get_option('honnypotter');
+	$options['wp_authenticate_override'] = false;
+	update_option('honnypotter', $options);
 }

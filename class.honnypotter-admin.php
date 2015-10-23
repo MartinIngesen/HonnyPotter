@@ -42,6 +42,9 @@ class HonnyPotter_Admin
   	$logpath = plugin_dir_url(__FILE__) . $options['log_name'];
   ?>
   <div class="wrap">
+    <?php if(!$options['wp_authenticate_override']){ ?>
+    <h1>Warning: You have other plugins trying to override the same functions as we use.</h1>
+    <?php } ?>
   <h2>HonnyPotter</h2>
 
   <p>
