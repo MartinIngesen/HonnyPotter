@@ -3,7 +3,7 @@ Contributors: Mrtn9
 Tags: honeypot
 Requires at least: 4.3.1
 Tested up to: 4.4
-Stable tag: 1.2
+Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -37,6 +37,9 @@ No. Only failed attempts get recorded in the logs.
 FTP or access the WordPress installation, navigate to the HonnyPotter folder and delete the log.
 
 == Changelog ==
+
+= 1.3 =
+* Added some links to the GitHub repo, and information re: how to contact me for bugs or issues.
 
 = 1.2 =
 * Fixed issue `[Fatal error :( #1](https://github.com/MartinIngesen/HonnyPotter/issues/1)` by rewriting the code for randomizing logfile-names.
