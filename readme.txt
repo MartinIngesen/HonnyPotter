@@ -13,6 +13,8 @@ A honeypot for logging all failed login-attempts.
 
 A honeypot for logging all failed login-attempts.
 
+Source code and issues available at [https://github.com/MartinIngesen/HonnyPotter](https://github.com/MartinIngesen/HonnyPotter).
+
 # Note(!!!)
 This will currently make all failed login attempts globally accessible. Use at your own risk. Clear the logs immediately if you for some reason type in your wrong (but almost correct) password. This might change in a future version.
 

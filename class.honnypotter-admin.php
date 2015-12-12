@@ -41,7 +41,7 @@ class HonnyPotter_Admin
   ?>
   <div class="wrap">
     <?php if(!$options['wp_authenticate_override']){ ?>
-    <h1>Warning: You have other plugins trying to override the same functions as we use.</h1>
+    <h1>Warning: You have other plugins trying to override the same functions as we use, this plugin may or may not work.</h1>
     <?php } ?>
   <h2>HonnyPotter</h2>
 
@@ -57,6 +57,17 @@ class HonnyPotter_Admin
     <br />
     <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
   </form>
+  <br>
+  <br>
+  <hr />
+  <p>Created by Martin Ingesen.</p>
+
+  <p>
+    Please report any issues either via my <a href="https://twitter.com/Mrtn9">Twitter</a>, <a href="mailto:martin@ingesen.no">E-Mail</a> or via <a href="https://github.com/MartinIngesen/HonnyPotter">GitHub</a>.
+  </p>
+  <p>Read my blog at <a href="http://martin.ingesen.no">martin.ingesen.no</a>. Source code available at <a href="https://github.com/MartinIngesen/HonnyPotter">GitHub</a>.</p>
+
+
   </div>
 
   <?php
