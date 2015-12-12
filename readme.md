@@ -1,3 +1,7 @@
+# HonnyPotter
+
+Available at [https://wordpress.org/plugins/honnypotter/](https://wordpress.org/plugins/honnypotter/).
+
 # How to install
 
 1. Copy all the files into a new directory in ``$WP_ROOT/wp-content/plugins/``

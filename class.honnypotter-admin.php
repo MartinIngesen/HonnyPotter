@@ -24,8 +24,6 @@ class HonnyPotter_Admin
   	add_options_page('HonnyPotter', 'HonnyPotter', 'manage_options', 'honnypotter', array( 'HonnyPotter_Admin', 'plugin_options_page') );
   }
 
-
-
   public static function plugin_admin_init()
   {
   	register_setting('honnypotter_options', 'honnypotter', array( 'HonnyPotter_Admin', 'honnypotter_validate' ) );

@@ -6,7 +6,7 @@
 Plugin Name: HonnyPotter
 Plugin URI: https://github.com/MartinIngesen/HonnyPotter
 Description: Log all failed login-attempts.
-Version: 1.1
+Version: 1.2
 Author: Martin ingesen
 Author URI: http://martin.ingesen.no
 License: GPLv2 or later

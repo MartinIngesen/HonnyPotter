@@ -35,7 +35,7 @@ class HonnyPotter
 
   public static function options_init()
   {
-  	$random_log_file_name = bin2hex(mcrypt_create_iv(7, MCRYPT_DEV_URANDOM)) . '.log';
+  	$random_log_file_name = $rand = substr(md5(microtime()),rand(0,17),14) . '.log';
   	$array['log_name'] = $random_log_file_name;
   	$array['wp_authenticate_override'] = false;
   	update_option('honnypotter', $array);
