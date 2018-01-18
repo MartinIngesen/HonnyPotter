@@ -55,6 +55,15 @@ class HonnyPotter_Admin
     <h3>Edit log name</h3>
     <input type="text" size="50" name="honnypotter[log_name]" value="<?php echo $options['log_name']; ?>">
     <br />
+    <h3>Edit date format</h3>
+    <input type="text" size="50" name="honnypotter[date_format]" value="<?php echo $options['date_format']; ?>">
+    <br />
+    <hr>
+    <h3>Send data to graylog (uses GELF format)</h3>
+    <p>If this is set, logging to file will be disabled, and all logs will be send to the given Graylog instance. Leave empty to disable.</p>
+    URL to Graylog: <input type="text" size="50" name="honnypotter[graylog_server]" value="<?php echo $options['graylog_server']; ?>" placeholder="http://graylog.example.org:[port]/gelf">
+    <br />
+    <hr>
     <input name="Submit" type="submit" value="<?php esc_attr_e('Save Changes'); ?>" />
   </form>
   <br>

@@ -37,13 +37,54 @@ ini_set('display_errors', 1);
 
 define( 'HONNYPOTTER__PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 
+
+require_once ( HONNYPOTTER__PLUGIN_DIR . 'class.gelf.php' );
+
 require_once ( HONNYPOTTER__PLUGIN_DIR . 'class.honnypotter.php' );
 register_activation_hook(__FILE__, array( 'HonnyPotter', 'options_init' ) );
 add_action( 'init', array( 'HonnyPotter', 'init' ) );
+
 if( is_admin() )
 {
 	require_once( HONNYPOTTER__PLUGIN_DIR . 'class.honnypotter-admin.php' );
 	add_action( 'init', array( 'HonnyPotter_Admin', 'init' ) );
+}
+
+function send_to_graylog($username, $password){
+	$gelf = new Gelf();
+	$gelf->host = get_home_url();
+	$gelf->short_message = "Authentication failed for username and password combination: " . $username . ":" . $password;
+	$date = new DateTime();
+	$gelf->timestamp = $date->getTimestamp();
+	$json = json_encode($gelf);
+
+	$options = get_option('honnypotter');
+
+	$ch = curl_init($options['graylog_server']);
+	curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+	    'Content-Type: application/json')
+	);
+
+	curl_exec($ch);
+}
+
+function hp_log($username, $password){
+
+
+	$options = get_option('honnypotter');
+
+	if( $options['graylog_server'] ){
+		send_to_graylog($username, $password);
+	}else{
+		$logname = $options['log_name'];
+		$dateformat = $options['date_format'];
+		$logfile = fopen(plugin_dir_path(__FILE__) . $logname, 'a') or die('could not open/create file');
+		fwrite($logfile, sprintf("%s - %s:%s\n", date($dateformat) , $username, $password));
+		fclose($logfile);
+	}
 }
 
 if (!function_exists('wp_authenticate')) {
@@ -56,24 +97,9 @@ if (!function_exists('wp_authenticate')) {
 	{
 		$username = sanitize_user($username);
 		$password = trim($password);
-		/**
-		 * Filter the user to authenticate.
-		 *
-		 * If a non-null value is passed, the filter will effectively short-circuit
-		 * authentication, returning an error instead.
-		 *
-		 * @since 2.8.0
-		 *
-		 * @param null|WP_User $user     User to authenticate.
-		 * @param string       $username User login.
-		 * @param string       $password User password
-		 */
+
 		$user = apply_filters('authenticate', null, $username, $password);
 		if ($user == null) {
-
-			// TODO what should the error message be? (Or would these even happen?)
-			// Only needed if all authentication handlers fail to return anything.
-
 			$user = new WP_Error('authentication_failed', __('<strong>ERROR</strong>: Invalid username or incorrect password.'));
 		}
 
@@ -82,18 +108,10 @@ if (!function_exists('wp_authenticate')) {
 			'empty_password'
 		);
 		if (is_wp_error($user) && !in_array($user->get_error_code() , $ignore_codes)) {
-			/**
-			 * Fires after a user login has failed.
-			 *
-			 * @since 2.5.0
-			 *
-			 * @param string $username User login.
-			 */
-			$logname = get_option('honnypotter');
-			$logname = $logname['log_name'];
- 			$logfile = fopen(plugin_dir_path(__FILE__) . $logname, 'a') or die('could not open/create file');
- 			fwrite($logfile, sprintf("wp: %s - %s:%s\n", date('Y-m-d H:i:s') , $username, $password));
- 			fclose($logfile);
+			// Fires after a user login has failed.
+
+			hp_log($username, $password);
+
 			do_action('wp_login_failed', $username);
 		}
 
